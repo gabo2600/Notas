@@ -1,0 +1,98 @@
+
+
+
+FDD
+
+Back end
+-Proyecto express basico
+
+-Crear notas
+-Editar notas
+-Borrar notas
+-Ver notas propias
+-Ver notas de terceros
+-Notas privadas y publicas
+-Editor de texto
+
+-Crear cuenta
+-Borrar cuenta
+-Editar perfil
+-Ver perfil
+
+
+
+Front End
+
+-Proyecto react basico
+-Crear notas
+-Editar notas
+-Borrar notas
+-Ver notas propias
+-Ver notas de terceros
+-Notas privadas y publicas
+-Editor de texto
+
+-Crear cuenta
+-Borrar cuenta
+-Editar perfil
+-Ver perfil
+
+-Tema claro y obscuro
+
+-Que la nota guarde imagenes y links a otra parte
+-Que haya texto en negritas
+-Panel de ayuda
+
+Arquitectura
+-SOAP SPA REST
+
+Base de datos
+-Mysql
+
+
+Diccionario de datos
+-
+
+
+Base de datos (DER)
+    Nota
+    -idNota(int)
+    -titulo(string)
+    -contenido(string)
+    -autor(int)
+    -privado(bool)
+    -fechaCreacion
+    fechaModificación
+    
+    Usuario
+    -idUser
+    -email
+    -password
+    -nombre
+    -fechaCreacion
+    
+    Sesion
+    -idSesion
+    -fechaCreacion
+    -fechaCaducidad
+    
+    RelSU
+    -idRSU
+    -idSesion
+    -idUsuario
+    
+    RelUN
+    -idRUN
+    -idNota
+    -idUser
+    
+
+
+
+
+
+
+
+
+
+
