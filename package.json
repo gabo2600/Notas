@@ -4,8 +4,8 @@
   "description": "Aplicación de notas creada en expres y react usando mysql",
   "main": "app.js",
   "scripts": {
-    "test": "nodemon app",
-    "start": "node app",
+    "test": "nodemon src/app",
+    "start": "node src/app",
     "wp": "npx webpack"
   },
   "author": "Gabriel Velez",
@@ -19,6 +19,7 @@
     "babel-loader": "^8.2.2",
     "css-loader": "^6.4.0",
     "express": "^4.17.1",
+    "mysql-migrations": "^1.0.7",
     "mysql2": "^2.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
