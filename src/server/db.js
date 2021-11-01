@@ -8,10 +8,21 @@ const pool = mysql.createPool({
   password:'1312123',
   database: 'notesDb',
   waitForConnections: true,
-  connectionLimit: 15,
+  connectionLimit: 99,
   queueLimit: 0
 });
 
 mig.init(pool, __dirname + '/db',()=>{
   console.log("Migraciones realizadas");
 });
+
+const query = async function(sql,param= undefined){
+  console.log(sql);
+  console.log(param);
+  if (param!=undefined)
+    return await pool.promise().query(sql,param);
+  else
+  return await pool.promise().query(sql);
+}
+
+module.exports = query;

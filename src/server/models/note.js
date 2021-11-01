@@ -1,9 +1,9 @@
 const db = require('mysql2');
 
-class User{
-    Crear(email,user_name,pass){
-        db.query("");
-        
+class Note{
+    tab = "note"
+
+    async Crear(nameN,cont,public){
     }
 
     Modificar(email,user_name,pass,public){

@@ -5,8 +5,8 @@ use notesDb;
 
 CREATE TABLE IF NOT EXISTS note(
     idNote int not null  auto_increment,
-    cont text  not null,
     nameN varchar(128) not null,
+    cont text  not null,
     public bool  not null,
     f_crea date  not null,
     f_mod date  not null,
@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS user(
     user_name varchar(30)  not null,
     pass varchar(1024)  not null,
     public BOOL  not null,  
-    user_nn int  not null,
     primary key (idUser)
 );
 
