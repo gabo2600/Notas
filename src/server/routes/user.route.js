@@ -1,76 +1,90 @@
 const ex = require("express");
 const ctrl = require("../controllers/user.controller");
+const usr = new ctrl();
 const R = ex.Router();
 
-R.get("/",(req,res)=>{
-    
-    res.json({"res":ctrl.index()});
+R.get("/:email/:hash?",async (req,res)=>{ //consultar
+    let email = req.params.email;
+    let hash = req.params.hash;
+
+    let data = await usr.Consultar(email,hash);
+
+    if (data.email = undefined)
+        res.json({"code":200,"data":data});
+    else
+        res.json({"code":400,"err":data});
+
+});
+
+
+R.post("/",async (req,res)=>{ //crear 
+    let email = req.body.email;
+    let user_name = req.body.user_name;
+    let pass = req.body.pass;
+    let pub = req.body.pub;
+    let err = [];
+    if (email!=undefined && user_name!= undefined && pass!=undefined && pub!= undefined)
+        err = await usr.Crear(email,user_name,pass,pub);
+    else
+        err = ["Error 500"];
+    if (err.length>0){
+        res.json({"code":400,"msg":err});
+    }
+    else
+        res.json({"code":200,"msg": ["El usuario fue registrado exitosamente"]});
+});
+
+
+R.put("/",async (req,res)=>{ //modificar
+    let email = req.body.email;
+    let nemail = req.body.nemail;
+    let pass = req.body.pass;
+    let npass = req.body.npass;
+    let npassR = req.body.npassR;
+    let user_name = req.body.user_name;
+    let pub = req.body.pub;
+    let err = [];
+
+    if (npass != npassR){
+        err.push("La nueva contraseña no coincide con la comprobacion");
+        res.json({"code":401,msg:err});
+    }else{
+        err = await usr.Modificar(nemail,email,user_name,pass,npass,pub);
+        if (err.length>0)
+            res.json({"code":402,msg:err});
+        else
+            res.json({"code":200,msg:['Datos modificados satisfactoriamente']});
+
+
+    }
+});
+
+
+R.delete("/",async(req,res)=>{ //eliminar
+    let email = req.body.email;
+    let pass = req.body.pass;
+    let err = await usr.Borrar(email,pass);
+    if (err.length>0)
+        res.json({"code":400,msg:err});
+    else 
+        res.json({"code":200,msg:["Usuario eliminado exitosamente"]});
+});
+
+R.post("/login",async (req,res)=>{
+    let email = req.body.email;
+    let pass = req.body.pass;
+    let hash = await usr.login(email,pass);
+
+    if (hash == undefined)
+        res.json({"code":400,msg:"El usuario o la contraseña son incorrectos"});
+    else
+        res.json({"code":200,msg:hash});
+});
+
+R.get("/logout/:hash",(req,res)=>{
+    let hash = req.params.hash;
+    usr.logout(hash);
+    res.json({'code':200,"msg":"Adios"});
 });
 
 module.exports =R;
-
-/* DB
-const model = require("./Server/models/model");
-++++++++++++++++++CREACION+++++++++++++++++++
-
-const Dato = new model({ name: 'Zildjian' });
-Dato.save().then(() => console.log('Dato guardado exitosamente'));
-
-+++++++++++++++++++READ++++++++++++++++++++++
-
-Person.find((err, people) => {
-    if (err) return res.status(500).send(err)
-    return res.status(200).send(people);
-});
-
-Kitten.findOne(
-    {color: "white", name: "Dr. Miffles", age: 1},
-    {name: true, owner: true}, //Devuelve solo los campos "name" y "owner"
-    (err, kitten) => {
-        if (err) return res.status(200).send(err)
-        return res.status(200).send(kitten)
-    }
-);
-Kitten.findById(req.params.kittenId, (err, kitten) => {
-    if (err) return res.status(500).send(err)
-    return res.status(200).send(kitten)
-});
-Kitten.where("age").gte(1).lte(4).exec((err, kittens) => {
-    if (err) return res.status(500).send(err)
-    return res.status(200).send(kittens)
-});
-
-+++++++++++++++++++UPDATE++++++++++++++++++++
-Todo.findByIdAndUpdate(
-    // the id of the item to find
-    req.params.todoId,
-    
-    // the change to be made. Mongoose will smartly combine your existing 
-    // document with this change, which allows for partial updates too
-    req.body,
-    
-    // an option that asks mongoose to return the updated version 
-    // of the document instead of the pre-updated one.
-    {new: true},
-    
-    // the callback function
-    (err, todo) => {
-    // Handle any possible database errors
-        if (err) return res.status(500).send(err);
-        return res.send(todo);
-    }
-)
-
-+++++++++++++++++++DELETE++++++++++++++++++++
-
-Todo.findByIdAndRemove(req.params.todoId, (err, todo) => {
-    if (err) return res.status(500).send(err);
-    const response = {
-        message: "Todo successfully deleted",
-        id: todo._id
-    };
-    return res.status(200).send(response);
-});
-
-
-*/

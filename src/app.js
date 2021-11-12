@@ -5,13 +5,13 @@ require('./server/db');
 const app = ex();
 
 app.set('port', process.env.PORT || 4000);
+app.set("Salt",Math.floor(Math.random()*9999999999).toString());
 
 // middlewares 
 app.use(ex.json());
 
 //Static
 app.use('/', ex.static(path.join(__dirname, 'client/public')));
-
 
 //Routes
 app.use('/api/note', require('./server/routes/note.route'));
