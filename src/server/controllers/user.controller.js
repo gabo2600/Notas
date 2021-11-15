@@ -100,6 +100,14 @@ class UC extends Controller{
 		return err;
 	}
 
+	async login(email,pass){
+		email = this.cleanStr(email);
+		pass = this.cleanStr(pass);
+		pass = this.enc(pass);
+
+		return await this.sesion.Crear(email,pass);
+	}
+
 } 
 
 module.exports = UC;

@@ -4,7 +4,7 @@ const query = require('../db');
 const secret = "SECREETT";
 
 function jwtGen(param){
-    return jwt.sign(param, secret, { expiresIn: '1800s'});
+    return jwt.sign(param, secret, { expiresIn: '72h'});
 }
 
 function jwtDec(param){
