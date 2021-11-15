@@ -65,8 +65,7 @@ class User{
 
         let sql1 = "SELECT * FROM "+this.tab+" WHERE email=? AND pass=?";
         let sql2 = "DELETE FROM note WHERE idUser=?";
-        let sql3 = "DELETE FROM sesion WHERE idUser=?";
-        let sql4 = "DELETE FROM "+this.tab+" WHERE idUser=?";
+        let sql3 = "DELETE FROM "+this.tab+" WHERE idUser=?";
         let tmp;
         let err = [];
         let idUser =0;
@@ -76,7 +75,6 @@ class User{
             idUser = tmp[0][0].idUser;
             await query(sql2,[idUser]);
             await query(sql3,[idUser]);
-            await query(sql4,[idUser]);
         }
         else{
             err.push("Usuario no encontrado o contraseña incorrecta");
@@ -84,17 +82,20 @@ class User{
         return err;
     }
 
-    async Consultar(email,hash= undefined){
+    async Consultar(email,hash=undefined){
 
-        let sql = "select email,user_name,pub,h4sh from "+this.tab+" natural join sesion where email=? and h4sh=?";
-        let sqlAlt =  "select email,user_name,pub from "+this.tab+" where email=? AND pub=true";
+        let sql =  "select idUser,email,user_name from "+this.tab+" where email=? AND pub=true";
+        let sql2 = "SELECT idUser,email,user_name from "+this.tab+" where idUser=?";
         var res;
-
-        if (hash!= undefined)
-            res = await query(sql,[email,hash]);
+        if (hash== undefined)
+            res= await query(sql,[email]);
+        else{
+            res= await query(sql2,[hash.idUser]);
+        }
+        if (res[0].length>0)
+            return res[0][0];
         else
-            res = await query(sqlAlt,[email]);
-        return res[0];
+            return undefined;
     }
 };
 module.exports = User;

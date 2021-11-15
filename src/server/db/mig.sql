@@ -1,4 +1,4 @@
-
+drop database IF EXISTS notesDb;
 CREATE DATABASE IF NOT EXISTS notesDb;
 
 use notesDb;
@@ -22,13 +22,4 @@ CREATE TABLE IF NOT EXISTS user(
     pass varchar(1024)  not null,
     pub BOOL  not null,  
     primary key (idUser)
-);
-
-CREATE TABLE IF NOT EXISTS sesion(
-    idSes int  not null auto_increment,
-    idUser int  not null,
-    h4sh varchar(1024) not null, 
-    f_crea date  not null,
-    f_ren date  not null,
-    primary key (idSes)
 );

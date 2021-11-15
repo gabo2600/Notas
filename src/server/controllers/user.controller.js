@@ -69,25 +69,18 @@ class UC extends Controller{
 		}
 	}
 
-	async Consultar(email,hash){
+	async Consultar(email,hash=undefined){
 		let data = undefined;
-		let err = [];
-		if (email!=undefined){
-			email = this.cleanStr(email);
-			hash = this.cleanStr(hash);
-			data = await this.user.Consultar(email,hash);
-			if (data.length<1)
-				err.push("El usuario no existe ");
-			else
-				data = data[0];
+
+		if (hash!=undefined){
+
+			hash = await this.sesion.Consultar(hash);
+			if (hash.email == email)
+				data = await this.user.Consultar(email,hash);
 		}
 		else
-			err.push("Datos incorrectos");
-
-		if (err.length>0)
-			return err;
-		else
-			return data;
+			data = await this.user.Consultar(email);
+		return data;
 	}
 
 
@@ -107,16 +100,6 @@ class UC extends Controller{
 		return err;
 	}
 
-	async login(email,pass){
-		email = this.cleanStr(email);
-		pass = this.cleanStr(pass);
-		pass = this.enc(pass);
-		return await this.sesion.Crear(email,pass);
-	}
-
-	async logout(hash){
-		this.sesion.Borrar(hash);
-	}
 } 
 
 module.exports = UC;

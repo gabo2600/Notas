@@ -1,5 +1,5 @@
 import React from 'react'
-import Component from './components/main';
+import Main from './components/main';
 
 function App() {
   return (
@@ -9,3 +9,4 @@ function App() {
   );
 }
 export default App;
+

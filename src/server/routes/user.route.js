@@ -8,12 +8,10 @@ R.get("/:email/:hash?",async (req,res)=>{ //consultar
     let hash = req.params.hash;
 
     let data = await usr.Consultar(email,hash);
-
-    if (data.email = undefined)
+    if (data!= undefined)
         res.json({"code":200,"data":data});
     else
-        res.json({"code":400,"err":data});
-
+        res.json({"code":400});
 });
 
 
@@ -21,19 +19,24 @@ R.post("/",async (req,res)=>{ //crear
     let email = req.body.email;
     let user_name = req.body.user_name;
     let pass = req.body.pass;
+    let Rpass = req.body.Rpass;
     let pub = req.body.pub;
     let err = [];
     if (email!=undefined && user_name!= undefined && pass!=undefined && pub!= undefined)
-        err = await usr.Crear(email,user_name,pass,pub);
+    {
+        if (Rpass === pass)
+            err = await usr.Crear(email,user_name,pass,pub);
+        else
+            err.push("Las contraseñas no coinciden");
+    }
     else
-        err = ["Error 500"];
+        err.push("Datos incompletos");
     if (err.length>0){
         res.json({"code":400,"msg":err});
     }
     else
         res.json({"code":200,"msg": ["El usuario fue registrado exitosamente"]});
 });
-
 
 R.put("/",async (req,res)=>{ //modificar
     let email = req.body.email;
@@ -81,10 +84,5 @@ R.post("/login",async (req,res)=>{
         res.json({"code":200,msg:hash});
 });
 
-R.get("/logout/:hash",(req,res)=>{
-    let hash = req.params.hash;
-    usr.logout(hash);
-    res.json({'code':200,"msg":"Adios"});
-});
 
 module.exports =R;
