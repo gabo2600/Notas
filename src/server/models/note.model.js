@@ -35,7 +35,7 @@ class Note{
 
     async Consultar(email,nameN,hash=undefined){
         //Nota publica
-        let sql1 = "select nameN,cont,pub,f_crea,f_mod from note NATURAL JOIN user WHERE email = ? AND nameN = ? AND NOT del=true AND pub=true";
+        let sql1 = "select idNote,nameN,cont,f_crea,f_mod from note NATURAL JOIN user WHERE email = ? AND nameN = ? AND NOT del=true AND pub=true";
         //Nota privada
         let sql2 = "select nameN,cont,pub,f_crea,f_mod from note WHERE idUser = ? AND nameN = ? AND NOT del=true";
 
@@ -55,20 +55,86 @@ class Note{
 
     
 
-    async Modificar(email,user_name,pass,pub){
+    async Modificar(token,idNote,nameN,cont,pub,date){
+        let sql1 = "UPDATE "+this.tab+" SET nameN=? ,cont=?,pub=?, f_mod=? WHERE idNote=?";
+        let param = [nameN,cont,pub,date,idNote];
+        let sql2 = "select note.idUser,idNote from note INNER JOIN user ON note.idUser=user.idUser where del=false AND user.idUser=? AND idNote=?";
+        let param2 = [token.idUser,idNote];
+        let tmp = undefined;
+
+        tmp = await query(sql2,param2);
+        if (tmp[0].length>0){
+            await query(sql1,param);
+            return [];
+        }
+        else
+            return ["Nota no encontrada"];
+    }
+
+    async Borrar(idNote,token){ //Papelera de reciclaje
+        let sql1 = "UPDATE "+this.tab+" SET del=true WHERE idNote=?";
+        let sql2 = "select note.idUser,idNote from note INNER JOIN user ON note.idUser=user.idUser where del=false AND user.idUser=? AND idNote=?";
+        let param = [idNote];
+        let param2 = [token.idUser,idNote];
+        let tmp=undefined;
+
+        tmp = await query(sql2,param2);
+
+        if (tmp[0].length>0){
+            await query(sql1,param);
+            return [];
+        }
+        else
+            return ["Nota no encontrada"];
 
     }
 
-    async Borrar(email){ //Papelera de reciclaje
+    //Papelera
 
+    async Consultar_Papelera(token){
+        let sql = "SELECT * FROM note WHERE del=true AND idUser=?";
+        let data = await query(sql,[token.idUser]);
+
+        if (data[0].length>0)
+            return data[0];
+        else
+            return undefined;
     }
 
-    async Eliminar(email){ //Eliminacion individual
+    async Eliminar(idNote,token){ //Eliminacion individual
+        let sql = "DELETE FROM note WHERE idNote=? AND idUser=?  AND del=true";
+        let param = [idNote,token.idUser];
+        let sql2 = "SELECT * FROM note WHERE idNote=? AND idUser=? AND del=true";
 
+        let tmp = await query(sql2,param);
+
+        if (tmp[0].length>0){
+            await query(sql,param);
+            return [];
+        }else
+            return ["Nota no encontrada"];
     }
 
-    async EliminarTodas(email){ //Eliminacion total
+    async Restaurar(idNote,token){ //Restaura notas individuales
+        let sql = "UPDATE note SET del=false WHERE idNote=? AND idUser=? AND del=true";
+        let param = [idNote,token.idUser];
+        let sql2 = "SELECT * FROM note WHERE idNote=? AND idUser=? AND del=true";
 
+        let tmp = await query(sql2,param);
+
+        if (tmp[0].length>0){
+            await query(sql,param);
+            return [];
+        }else
+            return ["Nota no encontrada"];
+    }
+
+    async EliminarTodas(token){ //Eliminacion total
+        let sql = "DELETE FROM note WHERE idUser=? AND del=true";
+        let param = [token.idUser];
+
+        await query(sql,param);
+        return [];
     }
 
       

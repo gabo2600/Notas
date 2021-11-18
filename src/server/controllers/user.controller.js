@@ -6,10 +6,8 @@ class UC extends Controller{
 
 	constructor(){
 		super();
-
 		this.user = new user();
 		this.sesion = new sesion();
-		
 	}
 	
 	async Crear(email,user_name,pass,pub){
@@ -71,10 +69,9 @@ class UC extends Controller{
 
 	async Consultar(email,hash=undefined){
 		let data = undefined;
+		hash = await this.sesion.Consultar(hash);
 
 		if (hash!=undefined){
-
-			hash = await this.sesion.Consultar(hash);
 			if (hash.email == email)
 				data = await this.user.Consultar(email,hash);
 		}

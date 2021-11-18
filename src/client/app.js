@@ -1,12 +1,39 @@
 import React from 'react'
-import Main from './components/main';
+import Navbar from './components/navbar';
 
-function App() {
-  return (
-    <div className="App">
-      <Main />
+class App extends React.Component{
+  render() {
+    <div>
+      <Navbar />
+
+      <Router>
+        <div>
+          <Link to="/">Home</Link>
+        </div>
+        <div>
+          <Link to="/blogs">Blog Articles</Link>
+        </div>
+        <div>
+          <Link to="/contact">Contact Me</Link>
+        </div>
+
+        <hr />
+
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/blogs">
+            <Blogs />
+          </Route>
+          <Route path="/contact">
+            <Contact />
+          </Route>
+        </Switch>
+      </Router>
     </div>
-  );
+  }
 }
+
 export default App;
 

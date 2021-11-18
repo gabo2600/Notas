@@ -21,7 +21,6 @@ R.post("/",async (req,res)=>{ //Crear
     }
     else
         res.json({"code":400,msg:"Error: Datos incorrectos"});
-
 });
 
 
@@ -40,14 +39,33 @@ R.get("/:email/:nota/:hash?",async(req,res)=>{ //Read
     }
 });
 
-R.put("/",(req,res)=>{ //Update
-    
-    res.json({"res":ctrl.index()});
+R.put("/",async (req,res)=>{ //Update
+    let token,nameN,cont,pub,idNote;
+    token = req.body.token;
+    idNote = req.body.idNote;
+    nameN = req.body.nameN;
+    cont = req.body.cont;
+    pub = req.body.pub;
+    let err;
+    if (token!=undefined && idNote!=undefined && nameN!=undefined && cont!=undefined && pub!=undefined){
+        
+        err = await note.Modificar(token,nameN,cont,pub,idNote);
+        if (err.length>0)
+            res.json({"code":200,msg:err[0]});
+        else
+        res.json({"code":200,msg:"Nota guardada con exito"});
+    }
+    else
+        res.json({"code":400,msg:"Error: Datos incorrectos"});
 });
 
-R.delete("/:idNote/:hash",(req,res)=>{ //Delete
-    
-    res.json({"res":ctrl.index()});
+R.delete("/:idNote/:hash",async(req,res)=>{ //Delete
+    let {idNote,hash} = req.params;
+    let err = await note.Borrar(idNote,hash);
+    if (err.length>0)
+        res.json({"code":400,msg:"Error al borrar nota"});
+    else
+        res.json({"code":200,msg:"Nota eliminada con exito"});
 });
 
 module.exports =R;

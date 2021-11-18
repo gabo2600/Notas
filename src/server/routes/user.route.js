@@ -1,9 +1,11 @@
 const ex = require("express");
-const ctrl = require("../controllers/user.controller");
-const usr = new ctrl();
+const userCtrl = require("../controllers/user.controller");
+const noteCtrl = require("../controllers/note.controller");
+const usr = new userCtrl();
+const note = new noteCtrl();
 const R = ex.Router();
 
-R.get("/:email/:hash?",async (req,res)=>{ //consultar
+R.get("/perfil/:email/:hash?",async (req,res)=>{ //consultar
     let email = req.params.email;
     let hash = req.params.hash;
 
@@ -73,6 +75,8 @@ R.delete("/",async(req,res)=>{ //eliminar
         res.json({"code":200,msg:["Usuario eliminado exitosamente"]});
 });
 
+//Extern
+
 R.post("/login",async (req,res)=>{
     let email = req.body.email;
     let pass = req.body.pass;
@@ -83,6 +87,40 @@ R.post("/login",async (req,res)=>{
     else
         res.json({"code":200,msg:hash});
 });
+
+//Papelera de reciclaje
+
+R.get("/papelera/:hash", async (req,res)=>{ //Ver todas las notas en papelera
+    let hash = req.params.hash;
+    let Data = await note.consultar_Papelera(hash);
+    res.json({"code":200,"data": Data });
+
+});
+
+
+R.post("/papelera", async (req,res)=>{ // Restaurar/eliminar una
+    // idNota, token,   rest( si es true que la restaure si no  que la elimine)
+    let {idNote,hash,rest} = req.body;
+    let err = await note.Borrar_Restaurar_Papelera(idNote,hash,rest);
+
+    if (err.length >0)
+        res.json({"code":400,"msg":err });
+    else
+        if (rest == true)
+            res.json({"code":200,"msg":"Nota restaurada exitosamente"});
+        else
+            res.json({"code":200,"msg":"Nota eliminada exitosamente"});
+});
+
+R.delete("/papelera/:hash", async (req,res)=>{ //Borrarlo todo
+    let hash = req.params.hash;
+    let err = await note.Vaciar_Papelera(hash);
+    if (err.length>0)
+        res.json({"code":400,"msg":err });
+    else
+        res.json({"code":200,"msg":"Papelera vaciada exitosamente"});
+});
+
 
 
 module.exports =R;
