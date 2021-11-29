@@ -24,6 +24,15 @@ class NC extends Controller {
         return err;
     }
 
+    async ConsultarTodas(email,hash)
+    {
+        hash = await this.sesion.Consultar(hash)||undefined;
+        email = this.cleanStr(email);
+
+        let data = await this.note.ConsultarTodas(email,hash);
+        return data;
+    }
+
     async Consultar(email,nameN,hash)
     {
         email = this.cleanStr(email);

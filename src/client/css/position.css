@@ -1,0 +1,20 @@
+ header{
+    display: flex;
+    flex-direction:row;
+    justify-content:space-between;
+    grid-column:1/span 3;
+
+ }
+
+ .options{
+     display: flex;
+     flex-direction:row;
+ }
+
+ main{
+     margin-inline: 10vw;
+     justify-content:center;
+     width:80vw;
+     min-width: 400px;
+     display:grid;
+ }

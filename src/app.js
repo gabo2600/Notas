@@ -1,6 +1,5 @@
 const ex = require('express');
 const path = require('path')
-require('./server/db');
 
 const app = ex();
 
@@ -13,7 +12,8 @@ app.use(ex.json());
 //Static
 app.use('/', ex.static(path.join(__dirname, 'client/public')));
 
-//Routes
+//Routes 
+
 app.use('/api/note', require('./server/routes/note.route'));
 app.use('/api/user', require('./server/routes/user.route'));
 

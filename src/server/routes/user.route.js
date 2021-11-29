@@ -16,7 +16,6 @@ R.get("/perfil/:email/:hash?",async (req,res)=>{ //consultar
         res.json({"code":400});
 });
 
-
 R.post("/",async (req,res)=>{ //crear 
     let email = req.body.email;
     let user_name = req.body.user_name;
@@ -64,7 +63,6 @@ R.put("/",async (req,res)=>{ //modificar
     }
 });
 
-
 R.delete("/",async(req,res)=>{ //eliminar
     let email = req.body.email;
     let pass = req.body.pass;
@@ -97,7 +95,6 @@ R.get("/papelera/:hash", async (req,res)=>{ //Ver todas las notas en papelera
 
 });
 
-
 R.post("/papelera", async (req,res)=>{ // Restaurar/eliminar una
     // idNota, token,   rest( si es true que la restaure si no  que la elimine)
     let {idNote,hash,rest} = req.body;
@@ -120,7 +117,5 @@ R.delete("/papelera/:hash", async (req,res)=>{ //Borrarlo todo
     else
         res.json({"code":200,"msg":"Papelera vaciada exitosamente"});
 });
-
-
 
 module.exports =R;

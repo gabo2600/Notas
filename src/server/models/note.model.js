@@ -53,6 +53,33 @@ class Note{
         return data;
     }
 
+    async ConsultarTodas(email,hash){
+        
+        let sql;
+        let param;
+        let data = undefined;
+
+        if (hash!= undefined)
+            if (hash.email == email){ //Si el usuario intenta ver sus propias notas
+                sql = "select note.* from note inner join user on note.idUser=user.idUser WHERE note.idUser=?";
+                param = [hash.idUser];
+            }else{  //Si el usuario intenta ver notas de un perfil ajeno
+                sql = "select note.* from note inner join user on note.idUser=user.idUser WHERE note.pub=true AND email=?";
+                param = [email];
+            }
+        else{  //Si un usuario externo intenta ver notas de un usuario x
+            sql = "select note.* from note inner join user on note.idUser=user.idUser WHERE note.pub=true AND email=?";
+            param = [email];
+        }
+        data = await query(sql,param);
+
+        if (data[0].length>0)
+            data = data[0];
+        else
+            data = undefined;
+        return data;
+    }
+
     
 
     async Modificar(token,idNote,nameN,cont,pub,date){

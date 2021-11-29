@@ -24,7 +24,7 @@ R.post("/",async (req,res)=>{ //Crear
 });
 
 
-R.get("/:email/:nota/:hash?",async(req,res)=>{ //Read
+R.get("/ver/:email/:nota/:hash?",async(req,res)=>{ //Read
     let email,nota,hash,data;
     email = req.params.email;
     nota = req.params.nota;
@@ -36,6 +36,20 @@ R.get("/:email/:nota/:hash?",async(req,res)=>{ //Read
         res.json({"code":200,msg:data});
     }else{
         res.json({"code":400,msg:"Nota no encontrada"});
+    }
+});
+
+R.get("/index/:email/:hash?",async(req,res)=>{ //Read
+    let email,hash,data;
+    email = req.params.email;
+    hash = req.params.hash|| undefined;
+
+    data = await note.ConsultarTodas(email,hash);
+
+    if (data!= undefined){
+        res.json({"code":200,msg:data});
+    }else{
+        res.json({"code":400,msg:"Este usuario no tiene notas o sus notas son privadas"});
     }
 });
 
