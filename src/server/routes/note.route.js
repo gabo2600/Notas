@@ -24,13 +24,12 @@ R.post("/",async (req,res)=>{ //Crear
 });
 
 
-R.get("/ver/:email/:nota/:hash?",async(req,res)=>{ //Read
-    let email,nota,hash,data;
-    email = req.params.email;
-    nota = req.params.nota;
+R.get("/ver/:hash/:nota",async(req,res)=>{ //Read
+    let nota,hash,data;
     hash = req.params.hash|| undefined;
+    nota = req.params.nota;
 
-    data = await note.Consultar(email,nota,hash);
+    data = await note.Consultar(hash,nota);
 
     if (data!= undefined){
         res.json({"code":200,msg:data});
@@ -39,11 +38,10 @@ R.get("/ver/:email/:nota/:hash?",async(req,res)=>{ //Read
     }
 });
 
-R.get("/index/:email/:hash?",async(req,res)=>{ //Read
+R.get("/index/:hash/:email?",async(req,res)=>{ //Read
     let email,hash,data;
     email = req.params.email;
     hash = req.params.hash|| undefined;
-
     data = await note.ConsultarTodas(email,hash);
 
     if (data!= undefined){
@@ -73,8 +71,8 @@ R.put("/",async (req,res)=>{ //Update
         res.json({"code":400,msg:"Error: Datos incorrectos"});
 });
 
-R.delete("/:idNote/:hash",async(req,res)=>{ //Delete
-    let {idNote,hash} = req.params;
+R.delete("/:hash/:idNote",async(req,res)=>{ //Delete
+    let {hash,idNote} = req.params;
     let err = await note.Borrar(idNote,hash);
     if (err.length>0)
         res.json({"code":400,msg:"Error al borrar nota"});

@@ -10,7 +10,8 @@ app.set("Salt",Math.floor(Math.random()*9999999999).toString());
 app.use(ex.json());
 
 //Static
-app.use('/', ex.static(path.join(__dirname, 'client/public')));
+app.use('/', ex.static(path.join(__dirname, 'client/build')));
+app.use('/note/*', ex.static(path.join(__dirname, 'client/build')));
 
 //Routes 
 

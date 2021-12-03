@@ -33,13 +33,13 @@ class NC extends Controller {
         return data;
     }
 
-    async Consultar(email,nameN,hash)
+    async Consultar(hash,idNote)
     {
-        email = this.cleanStr(email);
-        nameN = this.cleanStr(nameN);
+        idNote = this.cleanStr(idNote);
+        console.log(idNote);
         hash = await this.sesion.Consultar(hash)||undefined;
 
-        let data = await this.note.Consultar(email,nameN,hash);
+        let data = await this.note.Consultar(hash,idNote);
         return data;
     }
 

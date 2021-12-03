@@ -33,24 +33,25 @@ class Note{
         }
     }
 
-    async Consultar(email,nameN,hash=undefined){
-        //Nota publica
-        let sql1 = "select idNote,nameN,cont,f_crea,f_mod from note NATURAL JOIN user WHERE email = ? AND nameN = ? AND NOT del=true AND pub=true";
-        //Nota privada
-        let sql2 = "select nameN,cont,pub,f_crea,f_mod from note WHERE idUser = ? AND nameN = ? AND NOT del=true";
+    async Consultar(hash,idNote){
+        if (hash!=undefined){
+            let sql = "SELECT * FROM note WHERE del=false AND idNote=?";
+            
+            let data = await query(sql,[idNote]);
 
-        let data = undefined;
+            if (data[0].length>0){
+                data = data[0][0];
+                //Si la nota no es del usuario y tampoco es publica
+                if (data.idUser!=hash.idUser && data.pub==false)
+                    data = undefined
 
-        if (hash!=undefined && email==hash.email){ //Si es el dueño comprobable de la nota
-            data = await query(sql2,[hash.idUser,nameN]);
+            }else{
+                data = undefined; //no encontro ninguna nota
+            }
+            return data;
         }
-        else //Si es publica
-            data = await query(sql1,[email,nameN]);
-        if (data[0].length>0)
-            data = data[0][0];
-        else
-            data = undefined;
-        return data;
+        else 
+            return undefined;
     }
 
     async ConsultarTodas(email,hash){
@@ -59,18 +60,17 @@ class Note{
         let param;
         let data = undefined;
 
-        if (hash!= undefined)
-            if (hash.email == email){ //Si el usuario intenta ver sus propias notas
-                sql = "select note.* from note inner join user on note.idUser=user.idUser WHERE note.idUser=?";
-                param = [hash.idUser];
-            }else{  //Si el usuario intenta ver notas de un perfil ajeno
-                sql = "select note.* from note inner join user on note.idUser=user.idUser WHERE note.pub=true AND email=?";
-                param = [email];
-            }
-        else{  //Si un usuario externo intenta ver notas de un usuario x
-            sql = "select note.* from note inner join user on note.idUser=user.idUser WHERE note.pub=true AND email=?";
-            param = [email];
+        if (hash==undefined)
+            return undefined;
+
+        if (email!= undefined) { //Si el usuario intenta ver sus propias notas
+            sql = "select note.* from note inner join user on note.idUser=user.idUser WHERE del=false AND note.pub=true AND email=?";
+            param = [email];  
+        }else{  //Si el usuario intenta ver notas de un perfil ajeno
+            sql = "select * from note WHERE del=false AND idUser=?";
+            param = [hash.idUser];
         }
+
         data = await query(sql,param);
 
         if (data[0].length>0)

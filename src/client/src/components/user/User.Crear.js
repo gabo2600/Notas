@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import Msg from "../extra/msg";
 
+let url = "http://localhost:4000/api/user"
+
 class UC extends React.Component{
     constructor(props){
         super(props);
@@ -23,7 +25,7 @@ class UC extends React.Component{
     submit = async (event)=>{
         event.preventDefault();
         this.setState({err:undefined});
-        axios.post('/api/user/', {
+        axios.post(url+'', {
             email: this.state.email,
             user_name: this.state.user_name,
             pass: this.state.pass,
@@ -32,9 +34,6 @@ class UC extends React.Component{
         })
           .then((res)=> {
             switch(res.data.code){
-                case 400:
-                    this.setState({err: <div id='err'>{"Error:"+res.data.msg}</div>});    
-                    break;
                 case 200:
                     this.setState({msg:{
                         msg:res.data.msg,
@@ -42,6 +41,9 @@ class UC extends React.Component{
                         redirectMsg:"Aceptar"
                     }});
                     break;
+                default:
+                        this.setState({err: <div id='err'>{"Error:"+res.data.msg}</div>});    
+                        break;
             }
         })
           .catch(function (error) {
@@ -68,14 +70,15 @@ class UC extends React.Component{
                     this.setState({pub:true});
                 }else
                     this.setState({pub:false});
-                console.log(this.state);
                 break;
+            default:
+                
         }
     }
 
 
     render(){
-        if (this.state.msg==undefined)
+        if (this.state.msg===undefined)
             return(<main>
                 <form onSubmit={this.submit}>
                 <h1>Registrarse</h1>
@@ -91,9 +94,9 @@ class UC extends React.Component{
                     <br/>
                     <div>
                     Perfil publico
-                    <select name="pub" onChange={this.cambios}>
+                    <select name="pub" defaultValue={"false"} onChange={this.cambios}>
                         <option value="true" >si</option>
-                        <option value="false" selected>no</option>
+                        <option value="false">no</option>
                     </select>
                     </div>
                     <br />

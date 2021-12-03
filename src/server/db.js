@@ -17,8 +17,8 @@ mig.init(pool, __dirname + '/db',()=>{
 });
 
 const query = async function(sql,param= undefined){
-  console.log(sql);
-  console.log(param);
+  //console.log(sql);
+  //console.log(param);
   if (param!=undefined)
     return await pool.promise().query(sql,param);
   else

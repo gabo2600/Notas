@@ -1,7 +1,7 @@
 import React from "react";
-import axios from "axios";
+//import axios from "axios";
 
-class NB extends React.Component{
+class UM extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -12,8 +12,8 @@ class NB extends React.Component{
     render(){
 
         return(<main>
-            <h1>Index</h1>
+            
         </main>)
     }
 }
-export default NB;
+export default UM;
