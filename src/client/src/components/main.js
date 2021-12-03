@@ -4,7 +4,7 @@ import axios from "axios";
 
 import NotePrev from './note/note.Preview';
 
-const URL = "http://localhost:4000/api/note"
+const URL = "/api/note"
 
 class Main extends React.Component{
     constructor(props){

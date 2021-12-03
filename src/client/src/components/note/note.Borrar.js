@@ -6,8 +6,8 @@ import Msg from '../extra/msg';
 
 const NB = (props)=>{
     let {idNote} = useParams();
-    let url = "http://localhost:4000/api/note/"+props.hash+"/"+idNote;
-    let url2 = "http://localhost:4000/api/note/ver/"+props.hash+"/"+idNote;
+    let url = "/api/note/"+props.hash+"/"+idNote;
+    let url2 = "/api/note/ver/"+props.hash+"/"+idNote;
 
     const [data,setData] = useState(undefined);
     const [msg,setMsg] = useState(undefined);

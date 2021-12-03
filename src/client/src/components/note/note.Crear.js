@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 //EVENTOS*****************************************************************
 
 const NCr = (props)=>{
-    let url = "http://localhost:4000/api/note";
+    let url = "/api/note";
 
     const [nameN,setName] = useState('');
     const [cont,setCont] = useState('');

@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import Msg from "../extra/msg";
 
-let url = "http://localhost:4000/api/user"
+let url = "/api/user"
 
 class UC extends React.Component{
     constructor(props){

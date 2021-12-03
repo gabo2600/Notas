@@ -4,8 +4,8 @@ import Msg from '../extra/msg';
 import { Link,useParams } from "react-router-dom";
 
 const NM = (props)=>{
-    let url = "http://localhost:4000/api/note";
-    let url2 = "http://localhost:4000/api/note/ver/"+props.hash;
+    let url = "/api/note";
+    let url2 = "/api/note/ver/"+props.hash;
 
     const [nameN,setName] = useState(undefined);
     const [cont,setCont] = useState(undefined);

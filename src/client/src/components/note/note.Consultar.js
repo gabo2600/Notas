@@ -7,7 +7,7 @@ const cookies = new Cookies();
 
 const NC = (props)=>{
     let {idNote} = useParams();
-    let url = "http://localhost:4000/api/note/ver/"
+    let url = "/api/note/ver/"
 
     const [data,setData] = useState(undefined);
 
