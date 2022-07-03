@@ -3,10 +3,10 @@ const mig = require('mysql-migrations');
 
 // Create the connection pool. The pool-specific settings are the defaults
 const pool = mysql.createPool({
-  host: 'sql10.freemysqlhosting.net',
-  user: 'sql10455938',
-  password:'f4H7zPxCmR',
-  database: 'sql10455938',
+  host: 'localhost',
+  user: 'gabo',
+  password:'1312123',
+  database: 'notesDb',
   port:'3306',
   waitForConnections: true,
   connectionLimit: 99,
